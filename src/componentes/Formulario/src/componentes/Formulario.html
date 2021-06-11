@@ -1,0 +1,125 @@
+
+<section class="src-componentes-formulario">
+    <div class="jumbotron">
+      <h1>Formulario</h1>
+        <vue-form :state="formState" @submit.prevent="enviar()">
+        <!-- campo nombre -->
+        <validate tag="div">
+          <label for="nombre">Nombre</label>
+          <input
+             type="text" 
+             id="nombre" 
+             name="nombre" 
+             class="form-control"
+             autocomplete="off"
+             v-model.trim="formData.nombre"
+             required
+             :minlength="nombreLengthMin"
+             :maxlength="nombreLengthMax"
+             no-espacios 
+             >  
+
+             <!--mensajes de validacion-->
+            <field-messages name="nombre" show="$dirty">
+              <div slot="required" class="alert alert-danger mt-1"> Campo requerido</div>                          
+              <div slot="minlength" class="alert alert-danger mt-1"> 
+                Este campo requiere como minimo {{nombreLengthMin}} caracteres </div>
+              <div v-if="formData.nombre.length == nombreLengthMax" class="alert alert-warning mt-1"> 
+                Este campo debe tener como maximo {{nombreLengthMax}} caracteres </div>
+               <div slot="no-espacios" class="alert alert-danger mt-1"> 
+                No se permiten espacios intermedios en este campo
+              </div>
+            </field-messages>
+
+         </validate>
+        <br>
+         <!-- campo apellido -->
+        <validate tag="div">
+          <label for="apellido">Apellido</label>
+          <input
+             type="text" 
+             id="apellido" 
+             name="apellido" 
+             class="form-control"
+             autocomplete="off"
+             v-model.number="formData.apellido"
+             required
+             :minlength="apellidoLengthMin"
+             :maxlength="apellidoLengthMax"
+             no-espacios 
+             >  
+
+
+             <!--mensajes de validacion-->
+            <field-messages name="apellido" show="$dirty">
+              <div slot="required" class="alert alert-danger mt-1"> Campo requerido</div>             
+             <div slot="minlength" class="alert alert-danger mt-1"> 
+                Este campo requiere como minimo {{apellidoLengthMin}} caracteres </div>
+              <div v-if="formData.apellido.length == apellidoLengthMax" class="alert alert-warning mt-1"> 
+                Este campo debe tener como maximo {{apellidoLengthMax}} caracteres </div>  
+               <div slot="no-espacios" class="alert alert-danger mt-1"> 
+                No se permiten espacios intermedios en este campo
+              </div>       
+            </field-messages>
+
+        </validate>
+        <br>
+
+         <!-- campo nota -->
+        <validate tag="div">
+          <label for="nota"> Nota</label>
+          <input
+             type="number" 
+             id="nota" 
+             name="nota" 
+             class="form-control"
+             autocomplete="off"
+             v-model.number="formData.nota"
+             required
+             :min="notaMin"
+             :max="notaMax"
+             >  
+             <!--mensajes de validacion-->
+            <field-messages name="nota" show="$dirty">
+              <div slot="required" class="alert alert-danger mt-1"> Campo requerido</div>             
+              <div slot="min" class="alert alert-danger mt-1"> La nota minima es 0 </div>             
+              <div slot="max" class="alert alert-danger mt-1"> La nota maxima es 10</div>           
+            </field-messages>
+
+        </validate>
+        <br>
+
+        <br>
+        <button class="btn btn-success my-3" :disabled="formState.$invalid" type="submit">Enviar</button>
+        
+
+      </vue-form>
+
+      <hr>
+
+      <div class="table-responsive">
+        <table class="table">
+          <tr class="bg-secondary text-white">
+              <th>Nombre y apellido </th>
+              <th>Nota</th>          
+          </tr>
+          <tr v-for="(alumno,index) in alumnos" class="bg-primary text-white">
+              <td> {{ alumno.nombre}}  {{alumno.apellido}} </td>
+              <td :class ="resultado(alumno.nota)" > {{ alumno.nota }} </td>
+          </tr>
+        </table>
+      </div>
+
+      
+      <div class="table-responsive">
+        <table class="table">
+          <tr class="bg-secondary text-white">
+              <th>Promedio General </th>    
+              <th> {{ calcularProm() }} </th>      
+          </tr>
+        </table>
+      </div>
+
+    </div>
+</section>
+
